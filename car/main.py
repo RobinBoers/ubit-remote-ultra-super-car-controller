@@ -8,7 +8,7 @@ from music import play,stop,BA_DING
 import radio
 import time
 
-import waveshare_controller
+import move_motor
 
 buggy = MOVEMotor()
 buggyLights = NeoPixel(pin8, 4)
