@@ -1,4 +1,5 @@
 # A module to simplify the driving o the motors on Kitronik :MOVE Motor buggy with micro:bit
+
 CHIP_ADDR = 0x62 # CHIP_ADDR is the standard chip address for the PCA9632, datasheet refers to LED control but chip is used for PWM to motor driver
 MODE_1_REG_ADDR = 0x00
 MODE_2_REG_ADDR = 0x01
@@ -8,10 +9,7 @@ MODE_2_REG_VALUE = 0x04  # Setup to make changes on ACK, outputs set to open-dra
 MOTOR_OUT_VALUE = 0xAA  # Outputs set to be controled PWM registers
 LEFT_MOTOR = 0x04
 RIGHT_MOTOR = 0x02
-LF = pin2
-LB = pin8
-RF = pin1
-RB = pin0
+
 class MOVEMotorSensors:
 
     def distanceCm(self):

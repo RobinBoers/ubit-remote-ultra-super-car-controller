@@ -6,12 +6,12 @@ import time
 JoyStick = JOYSTICK()
 angryMode = False
     
-def init:
+def init():
     radio.on()
     display.show(Image.HAPPY)
     main()
     
-def main:
+def main():
     while True:    
         sendCoords()
 
@@ -23,14 +23,14 @@ def main:
 
         time.sleep(0.1)
 
-def sendCoords:
+def sendCoords():
     x_value = JoyStick_X.read_analog()
     y_value = JoyStick_Y.read_analog()
     
     radio.send("buggy_X_"+ str(x_value))
     radio.send("buggy_Y_"+ str(y_value))
     
-def toggleAngryMode:
+def toggleAngryMode():
     radio.send("buggy_toggle_alarm")
     angryMode = not angryMode
 
@@ -41,7 +41,7 @@ def toggleAngryMode:
 
     time.sleep(0.1)
 
-def toggleLineFollow:
+def toggleLineFollow():
     radio.send("buggy_toggle_line_follow")
     
 init()
