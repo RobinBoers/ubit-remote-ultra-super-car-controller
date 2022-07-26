@@ -111,7 +111,7 @@ def drive(X, Y):
     X = int(X*1)
     Y = int(Y*1)
 
-    if Y > 482 and Y < 542:
+    if Y > 432 and Y < 592:
         factorX = mapNum(X, 0, 1023, -1, 1)
         buggy.LeftMotor(baseSpeed * factorX)
         buggy.RightMotor(baseSpeed * -factorX)
