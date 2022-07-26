@@ -112,7 +112,8 @@ def drive(X, Y):
     X = int(X*1)
     Y = int(Y*1)
 
-    if Y > 412 and Y < 612:        factorX = mapNum(X, 0, 1023, -1, 1)
+    if Y > 412 and Y < 612:        
+        factorX = mapNum(X, 0, 1023, -1, 1)
         buggy.LeftMotor(baseSpeed * factorX + leftMotorOffset)
         buggy.RightMotor(baseSpeed * -factorX + rightMotorOffset)
         return
@@ -127,7 +128,7 @@ def drive(X, Y):
     if X > 512:
         reductionR = mapNum(X, 512, 1023, 0, 1)
     elif X < 512:
-        reductionL = 1- mapNum(X, 0, 512, 0, 1)
+        reductionL = 1 - mapNum(X, 0, 512, 0, 1)
     
     buggy.LeftMotor(speedL - speedL * reductionL)
     buggy.RightMotor(speedR - speedR * reductionR)
