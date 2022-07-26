@@ -14,7 +14,7 @@ def init():
     main()
     
 def main():
-    while True:    
+    while True:   
         sendCoords()
 
         if JoyStick.Listen_Key(KEY['E']):
@@ -33,6 +33,7 @@ def sendCoords():
     radio.send("buggy_Y_"+ str(y_value))
     
 def toggleAngryMode():
+    global angryMode
     radio.send("buggy_toggle_alarm")
     angryMode = not angryMode
 
