@@ -28,22 +28,23 @@ speedLimiter = 57
 followingLine = False
 angryMode = False
 
+speedX = 0
+speedY = 0
+
 def init():
     radio.on()
     radio.config(queue=20)
     main()
 
 def main():
+    global angryMode, followingLine
     while True:
         incoming = radio.receive()
-        imcoming = str(incoming)
-
-        setSpeedForMode(angryMode)
 
         if followingLine == True:
-            followLine()
+            followLine(incoming)
         else:
-            manuallyDriveCar()
+            manuallyDriveCar(incoming)
 
         if incoming == "buggy_toggle_alarm":
             angryMode = not angryMode
@@ -57,27 +58,27 @@ def main():
 
         buggyLights.show()
 
-def setSpeedForMode(angryModeOn):
-    if angryModeOn == True:
-        baseSpeed = 255
-    else:
-        baseSpeed = 155
-
-    maxSpeed = baseSpeed
-    turnSpeed = maxSpeed - 50
-
-def followLine():
+def followLine(incoming):
+    global buggy, sensor, speedLimiter
+    rightMotorOffset = 2
+    leftMotorOffset = 0
+    
     leftSensor = sensor.readLineFollow(sensor, "left")
     rightSensor = sensor.readLineFollow(sensor, "right")
     
     buggy.LeftMotor(leftSensor + leftMotorOffset - speedLimiter)
     buggy.RightMotor(rightSensor + rightMotorOffset - speedLimiter)
 
-def manuallyDriveCar():
+def manuallyDriveCar(incoming):
+    global speedX, speedY
+    incoming = str(incoming)
+
     if incoming[0:7] == "buggy_X":
         speedX = int(incoming[8:len(incoming)])
     elif incoming[0:7] == "buggy_Y":
         speedY = int(incoming[8:len(incoming)])
+        
+    print(speedX)
         
     drive(speedX, speedY)
 
@@ -104,14 +105,9 @@ def setAngryLights():
     buggyLights[3] = redLightColor 
     display.show(Image.ANGRY)
 
-# Motor control
-
-rightMotorOffset = 2
-leftMotorOffset = 0
-speedX = 0
-speedY = 0
-
 def drive(X, Y):
+    baseSpeed = getBaseSpeed()
+    
     X = int(X*1)
     Y = int(Y*1)
 
@@ -136,6 +132,13 @@ def drive(X, Y):
     buggy.LeftMotor(speedL - speedL * reductionL)
     buggy.RightMotor(speedR - speedR * reductionR)
 
+def getBaseSpeed():
+    global angryMode
+    if angryMode == True:
+        return 255
+    else:
+        return 155
+
 # Utils
 
 def mapNum(input, inMin, inMax, outMin, outMax):
@@ -148,3 +151,5 @@ def mapNum(input, inMin, inMax, outMin, outMax):
     output = outRange*factor
     output -= diffFromZero
     return output
+
+init()

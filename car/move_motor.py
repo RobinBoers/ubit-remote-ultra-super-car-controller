@@ -3,6 +3,7 @@
 # I stole this from somewhere, but I forgot the source.... Oops ':)
 
 from microbit import *
+import math
 
 CHIP_ADDR = 0x62 # CHIP_ADDR is the standard chip address for the PCA9632, datasheet refers to LED control but chip is used for PWM to motor driver
 MODE_1_REG_ADDR = 0x00
