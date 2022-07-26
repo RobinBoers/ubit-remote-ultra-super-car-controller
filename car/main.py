@@ -8,7 +8,7 @@ from music import play,stop,BA_DING
 import radio
 import time
 
-import move_motor
+from move_motor import *
 
 buggy = MOVEMotor()
 buggyLights = NeoPixel(pin8, 4)

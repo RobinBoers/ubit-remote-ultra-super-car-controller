@@ -3,7 +3,7 @@ import music
 import radio
 import time
 
-import waveshare_controller
+from waveshare_controller import *
 
 JoyStick = JOYSTICK()
 angryMode = False
