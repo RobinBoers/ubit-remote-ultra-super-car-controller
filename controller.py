@@ -3,7 +3,7 @@ import music
 import radio
 import time
 
-from ubit_car import waveshare_controller
+import waveshare_controller
 
 JoyStick = JOYSTICK()
 angryMode = False
