@@ -1,13 +1,20 @@
 # Module for simplifying communications with the Waveshare joystick for the micro:bit.
+
+# Source: https://www.waveshare.com/wiki/Joystick_for_micro:bit
+
+from microbit import *
+
 JoyStick_P = pin8
 JoyStick_X = pin1
 JoyStick_Y = pin2
+
 KEY_A = pin5
 KEY_B = pin11
 KEY_C = pin15
 KEY_D = pin14
 KEY_E = pin13
 KEY_F = pin12
+
 DIR = {
     'NONE': 0,
     'U': 1,
@@ -19,6 +26,7 @@ DIR = {
     'D_L': 7,
     'D_R': 8
 }
+
 KEY = {
     'NONE': 0,
     'P': 1,
@@ -29,6 +37,7 @@ KEY = {
     'E': 6,
     'F': 7
 }
+
 SCALE = {
     'C': 262,
     'bD': 277,

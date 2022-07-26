@@ -1,0 +1,1 @@
+This is a super amazing fantastic ultra cool remote-controlled car that has been built using the Kitronik :MOVE motor and Waveshare joystick for the micro:bit. It has an optional line-following mode and is definitely going to beat Bas' car!

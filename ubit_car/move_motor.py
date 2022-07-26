@@ -1,4 +1,8 @@
-# A module to simplify the driving o the motors on Kitronik :MOVE Motor buggy with micro:bit
+# A module to simplify the driving of the motors on Kitronik :MOVE Motor buggy with micro:bit
+
+# I stole this from somewhere, but I forgot the source.... Oops ':)
+
+from microbit import *
 
 CHIP_ADDR = 0x62 # CHIP_ADDR is the standard chip address for the PCA9632, datasheet refers to LED control but chip is used for PWM to motor driver
 MODE_1_REG_ADDR = 0x00
@@ -11,7 +15,6 @@ LEFT_MOTOR = 0x04
 RIGHT_MOTOR = 0x02
 
 class MOVEMotorSensors:
-
     def distanceCm(self):
         pin14.set_pull(pin14.NO_PULL)
         pin13.write_digital(0)
@@ -48,7 +51,6 @@ class MOVEMotorSensors:
             return pin1.read_analog() + self.rightLfOffset
 
 class MOVEMotor:
-
     # An initialisation function to setup the PCA chip correctly
     def __init__(self):
     
