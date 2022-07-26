@@ -22,8 +22,10 @@ blueLightColor = [200,200,255]
 greenLightColor = [0,150,0]
 
 # Constants
-speedLimiter = 57  
 # 80 is slow and sometimes gets stuck, 65 is around the sweet spot, fast but reliable. 60 is slightly faster, and with everything below it can't make certain turns anymore
+speedLimiter = 57  
+rightMotorOffset = -15
+leftMotorOffset = 0
 
 followingLine = False
 angryMode = False
@@ -59,9 +61,7 @@ def main():
         buggyLights.show()
 
 def followLine(incoming):
-    global buggy, sensor, speedLimiter
-    rightMotorOffset = 2
-    leftMotorOffset = 0
+    global buggy, sensor, speedLimiter, rightMotorOffset, leftMotorOffset
     
     leftSensor = sensor.readLineFollow(sensor, "left")
     rightSensor = sensor.readLineFollow(sensor, "right")
@@ -106,21 +106,21 @@ def setAngryLights():
     display.show(Image.ANGRY)
 
 def drive(X, Y):
+    global rightMotorOffset, leftMotorOffset
     baseSpeed = getBaseSpeed()
     
     X = int(X*1)
     Y = int(Y*1)
 
-    if Y > 432 and Y < 592:
-        factorX = mapNum(X, 0, 1023, -1, 1)
-        buggy.LeftMotor(baseSpeed * factorX)
-        buggy.RightMotor(baseSpeed * -factorX)
+    if Y > 412 and Y < 612:        factorX = mapNum(X, 0, 1023, -1, 1)
+        buggy.LeftMotor(baseSpeed * factorX + leftMotorOffset)
+        buggy.RightMotor(baseSpeed * -factorX + rightMotorOffset)
         return
     
     factorY = mapNum(Y, 0, 1023, -1, 1)
     speedForward = baseSpeed * factorY
-    speedL = speedForward
-    speedR = speedForward
+    speedL = speedForward + leftMotorOffset
+    speedR = speedForward + rightMotorOffset
     reductionR = 0
     reductionL = 0
     
