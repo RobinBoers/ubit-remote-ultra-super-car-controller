@@ -24,6 +24,7 @@ greenLightColor = [0,150,0]
 # Constants
 # 80 is slow and sometimes gets stuck, 65 is around the sweet spot, fast but reliable. 60 is slightly faster, and with everything below it can't make certain turns anymore
 speedLimiter = 57  
+turboModeModifier = 100
 motorOffset = -15
 
 followingLine = False
@@ -113,27 +114,32 @@ def drive(X, Y):
     
     X = int(X*1)
     Y = int(Y*1)
-
-    if Y > 412 and Y < 612:        
-        factorX = mapNum(X, 0, 1023, -1, 1)
-        buggy.LeftMotor(baseSpeed * factorX)
-        buggy.RightMotor(baseSpeed * -factorX + motorOffset)
-        return
     
     factorY = mapNum(Y, 0, 1023, -1, 1)
     speedForward = baseSpeed * factorY
-    speedL = speedForward
-    speedR = speedForward + motorOffset
-    reductionR = 0
-    reductionL = 0
-    
+
     if X > 512:
         reductionR = mapNum(X, 512, 1023, 0, 1)
     elif X < 512:
         reductionL = 1 - mapNum(X, 0, 512, 0, 1)
+
+    speedL = speedForward
+    speedR = speedForward + motorOffset
+
+    speedL = speedL - speedL * reductionL
+    speedR = speedR - speedR * reductionR
+
+    if Y > 412 and Y < 612:        
+        factorX = mapNum(X, 0, 1023, -1, 1)
+        speedL = baseSpeed * factorX
+        speedR = baseSpeed * -factorX + motorOffset
+
+    if abs(speedL - speedR) < 10:
+        speedL += turboModeModifier
+        speedR += turboModeModifier
     
-    buggy.LeftMotor(speedL - speedL * reductionL)
-    buggy.RightMotor(speedR - speedR * reductionR)
+    buggy.LeftMotor(speedL)
+    buggy.RightMotor(speedR)
 
 def getBaseSpeed():
     global angryMode
