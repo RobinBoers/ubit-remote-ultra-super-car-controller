@@ -35,7 +35,7 @@ speedY = 0
 
 def init():
     radio.on()
-    radio.config(queue=20)
+    radio.config(queue=20, channel=20)
     main()
 
 def main():
@@ -55,6 +55,12 @@ def main():
         elif incoming == "buggy_toggle_line_follow":
             followingLine = not followingLine
             time.sleep(0.2)
+
+        elif incoming == "buggy_increase_offset":
+            rightMotorOffset += 1
+
+        elif incoming == "buggy_decrease_offset":
+            rightMotorOffset -= 1
         
         setLights()
 

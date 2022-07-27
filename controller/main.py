@@ -10,6 +10,7 @@ angryMode = False
     
 def init():
     radio.on()
+    radio.config(channel=20)
     display.show(Image.HAPPY)
     main()
     
@@ -22,6 +23,12 @@ def main():
 
         elif JoyStick.Listen_Key(KEY['F']):
             toggleLineFollow()
+
+        elif JoyStick.Listen_Key(KEY['A']):
+            decreaseMotorOffset()
+
+        elif JoyStick.Listen_Key(KEY['B']):
+            increaseMotorOffset()
 
         time.sleep(0.1)
 
@@ -46,5 +53,11 @@ def toggleAngryMode():
 
 def toggleLineFollow():
     radio.send("buggy_toggle_line_follow")
-    
+
+def decreaseMotorOffset():
+    radio.send("buggy_decrease_offset")
+
+def increaseMotorOffset():
+    radio.send("buggy_increase_offset")
+
 init()
