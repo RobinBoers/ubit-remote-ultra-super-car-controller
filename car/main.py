@@ -9,6 +9,7 @@ import radio
 import time
 
 from move_motor import *
+from map_num import *
 
 buggy = MOVEMotor()
 buggyLights = NeoPixel(pin8, 4)
@@ -22,10 +23,11 @@ blueLightColor = [200,200,255]
 greenLightColor = [0,150,0]
 
 # Constants
-# 80 is slow and sometimes gets stuck, 65 is around the sweet spot, fast but reliable. 60 is slightly faster, and with everything below it can't make certain turns anymore
+# makes sure the buggy doesn't lose the line. 80 is slow and sometimes gets stuck, 65 is around the sweet spot, fast but reliable. 60 is slightly faster, and with everything below it can't make certain turns anymore
 speedLimiter = 57  
-turboModeModifier = 100
-motorOffset = -15
+turboModeModifier = 100 # extra speed on straight lines
+motorOffset = -15   # compensates for the difference between the Left    
+                    # and Right Motor
 
 followingLine = False
 angryMode = False
@@ -147,18 +149,5 @@ def getBaseSpeed():
         return 255
     else:
         return 155
-
-# Utils
-
-def mapNum(input, inMin, inMax, outMin, outMax):
-    diffFromZero = 0 - inMin
-    input += diffFromZero
-    inMax += diffFromZero
-    factor = input/inMax
-    outRange = outMax-outMin
-    diffFromZero = 0 - outMin
-    output = outRange*factor
-    output -= diffFromZero
-    return output
 
 init()
