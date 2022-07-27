@@ -73,8 +73,15 @@ def followLine(incoming):
     leftSensor = sensor.readLineFollow(sensor, "left")
     rightSensor = sensor.readLineFollow(sensor, "right")
     
-    buggy.LeftMotor(leftSensor - speedLimiter)
-    buggy.RightMotor(rightSensor + motorOffset - speedLimiter)
+    speedL = leftSensor - speedLimiter
+    speedR = rightSensor + motorOffset - speedLimiter
+    
+    if incoming == "buggy_nudge":
+        speedL += 10
+        speedR += 10
+        
+    buggy.LeftMotor()
+    buggy.RightMotor()
 
 def manuallyDriveCar(incoming):
     global speedX, speedY
@@ -111,7 +118,7 @@ def setAngryLights():
     display.show(Image.ANGRY)
 
 def drive(X, Y):
-    global motorOffset
+    global motorOffset, followingLine
     baseSpeed = getBaseSpeed()
     
     X = int(X*1)
@@ -119,6 +126,9 @@ def drive(X, Y):
     
     factorY = mapNum(Y, 0, 1023, -1, 1)
     speedForward = baseSpeed * factorY
+    
+    reductionR = 0
+    reductionL = 0
 
     if X > 512:
         reductionR = mapNum(X, 512, 1023, 0, 1)
@@ -136,7 +146,9 @@ def drive(X, Y):
         speedL = baseSpeed * factorX
         speedR = baseSpeed * -factorX + motorOffset
 
-    if abs(speedL - speedR) < 10:
+    # if the car is in line following mode and on a straight line,
+    # drastically increase the speed. Also called "TURBO MODE!!".
+    if followingLine == True and abs(speedL - speedR) < 20:
         speedL += turboModeModifier
         speedR += turboModeModifier
     
