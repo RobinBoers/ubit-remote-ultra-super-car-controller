@@ -24,8 +24,7 @@ greenLightColor = [0,150,0]
 # Constants
 # 80 is slow and sometimes gets stuck, 65 is around the sweet spot, fast but reliable. 60 is slightly faster, and with everything below it can't make certain turns anymore
 speedLimiter = 57  
-rightMotorOffset = -15
-leftMotorOffset = 0
+motorOffset = -15
 
 followingLine = False
 angryMode = False
@@ -57,23 +56,22 @@ def main():
             time.sleep(0.2)
 
         elif incoming == "buggy_increase_offset":
-            rightMotorOffset += 1
+            motorOffset += 1
 
         elif incoming == "buggy_decrease_offset":
-            rightMotorOffset -= 1
+            motorOffset -= 1
         
         setLights()
-
         buggyLights.show()
 
 def followLine(incoming):
-    global buggy, sensor, speedLimiter, rightMotorOffset, leftMotorOffset
+    global buggy, sensor, speedLimiter, motorOffset
     
     leftSensor = sensor.readLineFollow(sensor, "left")
     rightSensor = sensor.readLineFollow(sensor, "right")
     
-    buggy.LeftMotor(leftSensor + leftMotorOffset - speedLimiter)
-    buggy.RightMotor(rightSensor + rightMotorOffset - speedLimiter)
+    buggy.LeftMotor(leftSensor - speedLimiter)
+    buggy.RightMotor(rightSensor + motorOffset - speedLimiter)
 
 def manuallyDriveCar(incoming):
     global speedX, speedY
@@ -112,7 +110,7 @@ def setAngryLights():
     display.show(Image.ANGRY)
 
 def drive(X, Y):
-    global rightMotorOffset, leftMotorOffset
+    global motorOffset
     baseSpeed = getBaseSpeed()
     
     X = int(X*1)
@@ -120,14 +118,14 @@ def drive(X, Y):
 
     if Y > 412 and Y < 612:        
         factorX = mapNum(X, 0, 1023, -1, 1)
-        buggy.LeftMotor(baseSpeed * factorX + leftMotorOffset)
-        buggy.RightMotor(baseSpeed * -factorX + rightMotorOffset)
+        buggy.LeftMotor(baseSpeed * factorX)
+        buggy.RightMotor(baseSpeed * -factorX + motorOffset)
         return
     
     factorY = mapNum(Y, 0, 1023, -1, 1)
     speedForward = baseSpeed * factorY
-    speedL = speedForward + leftMotorOffset
-    speedR = speedForward + rightMotorOffset
+    speedL = speedForward
+    speedR = speedForward + motorOffset
     reductionR = 0
     reductionL = 0
     
