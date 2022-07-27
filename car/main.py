@@ -38,7 +38,7 @@ def init():
     main()
 
 def main():
-    global angryMode, followingLine
+    global angryMode, followingLine, motorOffset
     while True:
         incoming = radio.receive()
 
@@ -81,9 +81,7 @@ def manuallyDriveCar(incoming):
         speedX = int(incoming[8:len(incoming)])
     elif incoming[0:7] == "buggy_Y":
         speedY = int(incoming[8:len(incoming)])
-        
-    print(speedX)
-        
+
     drive(speedX, speedY)
 
 def setLights():
