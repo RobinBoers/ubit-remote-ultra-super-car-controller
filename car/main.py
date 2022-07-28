@@ -72,7 +72,9 @@ def followLine(incoming):
     
     leftSensor = sensor.readLineFollow(sensor, "left")
     rightSensor = sensor.readLineFollow(sensor, "right")
-    
+
+    # print("left sensor " + str(leftSensor) + " right sensor " + str(rightSensor))
+
     speedL = leftSensor - speedLimiter
     speedR = rightSensor + motorOffset - speedLimiter
     
@@ -80,8 +82,8 @@ def followLine(incoming):
         speedL += 10
         speedR += 10
         
-    buggy.LeftMotor()
-    buggy.RightMotor()
+    buggy.LeftMotor(speedL)
+    buggy.RightMotor(speedR)
 
 def manuallyDriveCar(incoming):
     global speedX, speedY
