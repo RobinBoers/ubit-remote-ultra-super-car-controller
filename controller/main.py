@@ -10,7 +10,7 @@ angryMode = False
     
 def init():
     radio.on()
-    radio.config(channel=20)
+    radio.config(channel=30)
     display.show(Image.HAPPY)
     main()
     

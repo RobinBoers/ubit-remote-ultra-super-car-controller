@@ -37,7 +37,7 @@ speedY = 0
 
 def init():
     radio.on()
-    radio.config(queue=20, channel=20)
+    radio.config(queue=20, channel=30)
     main()
 
 def main():
@@ -148,7 +148,7 @@ def drive(X, Y):
 
     # if the car is in line following mode and on a straight line,
     # drastically increase the speed. Also called "TURBO MODE!!".
-    if followingLine == True and abs(speedL - speedR) < 20:
+    if followingLine == True and abs(speedL - speedR) < 30:
         speedL += turboModeModifier
         speedR += turboModeModifier
     
