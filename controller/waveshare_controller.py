@@ -1,6 +1,7 @@
 # Module for simplifying communications with the Waveshare joystick for the micro:bit.
 
 # Source: https://www.waveshare.com/wiki/Joystick_for_micro:bit
+# License: None?
 
 from microbit import *
 

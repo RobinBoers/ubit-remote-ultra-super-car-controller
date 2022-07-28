@@ -30,6 +30,9 @@ def main():
         elif JoyStick.Listen_Key(KEY['B']):
             increaseMotorOffset()
 
+        elif JoyStick.Listen_Key(KEY['C']):
+            nudge()
+
         time.sleep(0.1)
 
 def sendCoords():
@@ -59,5 +62,8 @@ def decreaseMotorOffset():
 
 def increaseMotorOffset():
     radio.send("buggy_increase_offset")
+
+def nudge():
+    radio.send("buggy_nudge")
 
 init()
