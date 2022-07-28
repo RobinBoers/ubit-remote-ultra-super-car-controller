@@ -11,11 +11,12 @@ import time
 from move_motor import *
 from map_num import *
 
-buggy = MOVEMotor()
-buggyLights = NeoPixel(pin8, 4)
+amountOfLights = 4
+lightControlPin = pin8
 
-sensor = MOVEMotorSensors
-sensor.lineFollowCal(sensor)
+buggy = MOVEMotor()
+sensor = MOVEMotorSensors()
+buggyLights = NeoPixel(lightControlPin, amountOfLights)
 
 # Colors
 redLightColor = [200,0,0]
@@ -25,19 +26,23 @@ greenLightColor = [0,150,0]
 # Constants
 # makes sure the buggy doesn't lose the line. 80 is slow and sometimes gets stuck, 65 is around the sweet spot, fast but reliable. 60 is slightly faster, and with everything below it can't make certain turns anymore
 speedLimiter = 57  
-turboModeModifier = 100 # extra speed on straight lines
+turboModeModifier = 50 # extra speed on straight lines
 motorOffset = -15   # compensates for the difference between the Left    
                     # and Right Motor
 
-followingLine = False
+followingLine = True
 angryMode = False
 
 speedX = 0
 speedY = 0
 
 def init():
+    global sensor
+    
     radio.on()
     radio.config(queue=20, channel=30)
+    sensor.lineFollowCal(sensor)
+
     main()
 
 def main():
@@ -68,8 +73,8 @@ def main():
         buggyLights.show()
 
 def followLine(incoming):
-    global buggy, sensor, speedLimiter, motorOffset
-    
+    global buggy, sensor, speedLimiter, motorOffset, turboModeModifier\
+        
     leftSensor = sensor.readLineFollow(sensor, "left")
     rightSensor = sensor.readLineFollow(sensor, "right")
 
@@ -82,6 +87,12 @@ def followLine(incoming):
         speedL += 10
         speedR += 10
         
+    # if the car is in line following mode and on a straight line,
+    # drastically increase the speed. Also called "TURBO MODE!!".
+    if abs(speedL - speedR) < 10:
+        speedL += turboModeModifier
+        speedR += turboModeModifier
+
     buggy.LeftMotor(speedL)
     buggy.RightMotor(speedR)
 
@@ -143,16 +154,11 @@ def drive(X, Y):
     speedL = speedL - speedL * reductionL
     speedR = speedR - speedR * reductionR
 
-    if Y > 412 and Y < 612:        
+    offset = 100
+    if Y > 512-offset and Y < 512+offset:        
         factorX = mapNum(X, 0, 1023, -1, 1)
         speedL = baseSpeed * factorX
         speedR = baseSpeed * -factorX + motorOffset
-
-    # if the car is in line following mode and on a straight line,
-    # drastically increase the speed. Also called "TURBO MODE!!".
-    if followingLine == True and abs(speedL - speedR) < 30:
-        speedL += turboModeModifier
-        speedR += turboModeModifier
     
     buggy.LeftMotor(speedL)
     buggy.RightMotor(speedR)
